@@ -62,6 +62,11 @@ app.use(
  })
 );
 
+// FOR HOME ROUTE
+app.get('/', (req, res, next) => {
+ res.send('Hello World, from novelnotionapi! 😇.');
+});
+
 // ROUTES
 app.use('/api/v1/posts', postRoute);
 app.use('/api/v1/users', userRoute);
