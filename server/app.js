@@ -17,10 +17,7 @@ const app = express();
 // MIDDLEWARES
 // CROSS-ORIGIN
 // Define a whitelist of allowed origins
-const whitelist = [
- 'http://localhost:5173',
- 'https://novelnotion.onrender.com/',
-];
+const whitelist = ['https://novelnotion.onrender.com'];
 
 const corsOptions = {
  origin: (origin, callback) => {
