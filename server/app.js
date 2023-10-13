@@ -17,33 +17,37 @@ const app = express();
 // MIDDLEWARES
 // CROSS-ORIGIN
 // Define a whitelist of allowed origins
-const whitelist = ['https://novelnotion.onrender.com'];
+// const whitelist = ['https://novelnotion.onrender.com'];
+
+// const corsOptions = {
+//  origin: (origin, callback) => {
+//   if (whitelist.indexOf(origin) !== -1 || !origin) {
+//    callback(null, true);
+//   } else {
+//    callback(new Error('Not allowed by CORS'));
+//   }
+//  },
+//  credentials: true,
+// };
 
 const corsOptions = {
- origin: (origin, callback) => {
-  if (whitelist.indexOf(origin) !== -1 || !origin) {
-   callback(null, true);
-  } else {
-   callback(new Error('Not allowed by CORS'));
-  }
- },
- credentials: true,
+     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+     origin: '*',
+     optionSuccessStatus: 200,
+     headers: ['Content-Type', 'Authorization', 'x-access-token'],
+     credentials: true,
+     maxAge: 3600,
+     //  preflightContinue: true,
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // COOKIE-PARSER
 app.use(cookieParser());
 
-// Set securityHTTP headers
-app.use(
- helmet({
-  crossOriginResourcePolicy: false,
- })
-);
-
 // BODY-PARSER
 app.use(express.json());
-// app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+// app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Data sanitization against NOSQL injection
@@ -54,14 +58,25 @@ app.use(xss());
 
 // Data sanitization against parameter pollution
 app.use(
- hpp({
-  whitelist: ['name', 'email', 'title', 'content', 'category', 'comment'],
- })
+     hpp({
+          whitelist: [
+               'name',
+               'email',
+               'title',
+               'content',
+               'category',
+               'comment',
+          ],
+     })
 );
+
+// app.use('*', (req, res, next) => {
+//      console.log(req);
+// });
 
 // FOR HOME ROUTE
 app.get('/', (req, res, next) => {
- res.send('Hello World, from novelnotionapi! 😇.');
+     res.send('Hello World, from novelnotionapi! 😇.');
 });
 
 // ROUTES
@@ -71,7 +86,7 @@ app.use('/api/v1/comments', commentRoute);
 
 // ROUTE ERRORS
 app.use('*', (req, res, next) => {
- next(`Cannot find this url ${req.originalUrl} on this server!`);
+     next(`Cannot find this url ${req.originalUrl} on this server!`);
 });
 
 // OTHERS ERRORS

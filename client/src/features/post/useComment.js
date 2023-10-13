@@ -5,18 +5,20 @@ import { getCookie } from '../../hooks/useCookies';
 import { createComment as createCommentAPI } from '../../services/apiComments';
 
 export const useComment = () => {
- const cookie = getCookie('novelToken');
- const { isLoading: isCommenting, mutate: createComment } = useMutation({
-  mutationFn: (data) => createCommentAPI({ ...data, cookie }),
+     const cookie = getCookie('novelToken');
 
-  onSuccess: () => {
-   toast.success('Your Comment has been succefully Posted!');
-  },
+     const { isLoading: isCommenting, mutate: createComment } = useMutation({
+          mutationFn: (data) => createCommentAPI({ ...data, cookie }),
 
-  onError: (err) => {
-   toast.error(err);
-  },
- });
+          onSuccess: (data) => {
+               toast.success('Your Comment has been succefully Posted!');
+               window.location.reload(`/post/${data.post}`);
+          },
 
- return { isCommenting, createComment };
+          onError: (err) => {
+               toast.error(err);
+          },
+     });
+
+     return { isCommenting, createComment };
 };
