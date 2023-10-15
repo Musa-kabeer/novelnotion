@@ -17,70 +17,96 @@ import MeSettings from './pages/MeSettings';
 import ProtectedRoutes from './ui/ProtectedRoutes';
 
 const queryClient = new QueryClient({
- defaultOptions: {
-  queries: {
-   staleTime: 0,
-  },
- },
+     defaultOptions: {
+          queries: {
+               staleTime: 0,
+          },
+     },
 });
 
 const App = () => {
- return (
-  <>
-   <QueryClientProvider client={queryClient}>
-    <DarkModeContextProvider>
-     <ReactQueryDevtools />
-     <BrowserRouter>
-      <Routes>
-       <Route
-        element={
-         <ProtectedRoutes>
-          <AppLayout />
-         </ProtectedRoutes>
-        }
-       >
-        <Route path='/' element={<Home />} />
-        <Route path='/create-post' element={<Create />} />
-        <Route path='/post/:id' element={<Post />} />
-        <Route path='/me' element={<Profile />}>
-         <Route index element={<Navigate to='/me/posts' replace />} />
-         <Route path='posts' element={<UserPosts />} />
-         <Route path='users' element={<MeUsers />} />
-         <Route path='settings' element={<MeSettings />} />
-        </Route>
-       </Route>
-       <Route path='/sign-up' element={<SignUp />} />
-       <Route path='/login' element={<Login />} />
-      </Routes>
-     </BrowserRouter>
-    </DarkModeContextProvider>
-   </QueryClientProvider>
+     return (
+          <>
+               <QueryClientProvider client={queryClient}>
+                    <DarkModeContextProvider>
+                         <ReactQueryDevtools />
+                         <BrowserRouter>
+                              <Routes>
+                                   <Route
+                                        element={
+                                             <ProtectedRoutes>
+                                                  <AppLayout />
+                                             </ProtectedRoutes>
+                                        }
+                                   >
+                                        <Route path='/' element={<Home />} />
+                                        <Route
+                                             path='/create-post'
+                                             element={<Create />}
+                                        />
+                                        <Route
+                                             path='/post/:id'
+                                             element={<Post />}
+                                        />
+                                        <Route path='/me' element={<Profile />}>
+                                             <Route
+                                                  index
+                                                  element={
+                                                       <Navigate
+                                                            to='/me/posts'
+                                                            replace
+                                                       />
+                                                  }
+                                             />
+                                             <Route
+                                                  path='posts'
+                                                  element={<UserPosts />}
+                                             />
+                                             <Route
+                                                  path='users'
+                                                  element={<MeUsers />}
+                                             />
+                                             <Route
+                                                  path='settings'
+                                                  element={<MeSettings />}
+                                             />
+                                        </Route>
+                                   </Route>
+                                   <Route
+                                        path='/sign-up'
+                                        element={<SignUp />}
+                                   />
+                                   <Route path='/login' element={<Login />} />
+                              </Routes>
+                         </BrowserRouter>
+                    </DarkModeContextProvider>
+               </QueryClientProvider>
 
-   <Toaster
-    position='top-center'
-    reverseOrder={false}
-    gutter={4}
-    toastOptions={{
-     duration: 7000,
-     style: {
-      fontSize: '13px',
-     },
+               <Toaster
+                    position='top-center'
+                    reverseOrder={false}
+                    gutter={4}
+                    toastOptions={{
+                         duration: 7000,
+                         style: {
+                              fontSize: '13px',
+                         },
 
-     success: {
-      theme: {
-       primary: 'white',
-      },
-     },
+                         success: {
+                              theme: {
+                                   primary: 'white',
+                              },
+                         },
 
-     error: {
-      theme: {
-       primary: 'red',
-      },
-     },
-    }}
-   />
-  </>
- );
+                         error: {
+                              theme: {
+                                   primary: 'red',
+                              },
+                         },
+                    }}
+               />
+          </>
+     );
 };
 
 export default App;
