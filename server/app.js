@@ -17,16 +17,16 @@ const app = express();
 // MIDDLEWARES
 // CROSS-ORIGIN
 const corsOptions = {
-     methods: ['GET', 'POST', 'PUT', 'DELETE'],
      origin:
           process.env.NODE_ENV === 'production'
                ? 'https://novelnotion.vercel.app'
                : 'http://localhost:5173',
+     methods: ['GET', 'POST', 'DELETE', 'PATCH'],
      optionSuccessStatus: 200,
      headers: ['Content-Type', 'Authorization', 'x-access-token'],
      credentials: true,
      maxAge: 3600,
-     //  preflightContinue: true,
+     preflightContinue: false,
 };
 app.use(cors(corsOptions));
 
