@@ -20,7 +20,7 @@ const corsOptions = {
      methods: ['GET', 'POST', 'PUT', 'DELETE'],
      origin:
           process.env.NODE_ENV === 'production'
-               ? 'https://novelnotionapi.onrender.com'
+               ? 'https://novelnotion.vercel.app'
                : 'http://localhost:5173',
      optionSuccessStatus: 200,
      headers: ['Content-Type', 'Authorization', 'x-access-token'],
