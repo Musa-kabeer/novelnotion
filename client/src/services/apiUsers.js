@@ -1,12 +1,9 @@
 import { API_URL } from './config';
 
 // GET ALL USERS
-export const allUsers = async (cookie) => {
+export const allUsers = async () => {
      const res = await fetch(`${API_URL}/users`, {
-          method: 'GET',
-          headers: {
-               Authorization: `Bearer ${cookie}`,
-          },
+          credentials: 'include',
      });
 
      const data = await res.json();
@@ -18,12 +15,14 @@ export const allUsers = async (cookie) => {
      return users;
 };
 
-export const updateUserInfo = async ({ updateUser, id, cookie }) => {
+export const updateUserInfo = async ({ updateUser, id }) => {
+     console.log(Object.fromEntries(updateUser), id);
      const res = await fetch(`${API_URL}/users/${id}`, {
           method: 'PATCH',
           headers: {
-               Authorization: `Bearer ${cookie}`,
+               'Content-Type': 'application/json',
           },
+          credentials: 'include',
           body: updateUser,
      });
 
@@ -34,21 +33,13 @@ export const updateUserInfo = async ({ updateUser, id, cookie }) => {
      return data.user;
 };
 
-export const updateUserPassword = async ({
-     password,
-     currentPassword,
-     cookie,
-}) => {
+export const updateUserPassword = async (info) => {
      const res = await fetch(`${API_URL}/users/updatePassword`, {
           method: 'PATCH',
           headers: {
                'Content-Type': 'application/json',
-               Authorization: `Bearer ${cookie}`,
           },
-          body: JSON.stringify({
-               password,
-               currentPassword,
-          }),
+          body: JSON.stringify(info),
      });
 
      const data = await res.json();

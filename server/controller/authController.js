@@ -4,18 +4,25 @@ const User = require('../model/userModel');
 // CREATE NEW TOKEN
 const signToken = (res, statusCode, user) => {
      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-          expiresIn: '2d',
+          expiresIn: '30d',
      });
 
      user.password = undefined;
 
-     res.status(statusCode).json({
-          status: 'success',
-          token,
-          data: {
-               user,
-          },
-     });
+     res.status(statusCode)
+          .cookie('token', token, {
+               secure: process.env.NODE_ENV === 'production' ? true : false,
+               maxAge: 30 * 24 * 60 * 60 * 1000,
+               sameSite: process.env.NODE_ENV === 'production' ? 'None' : '',
+               httpOnly: true,
+          })
+          .json({
+               status: 'success',
+               token,
+               data: {
+                    user,
+               },
+          });
 };
 
 // SIGN UP
@@ -66,11 +73,7 @@ const login = async (req, res, next) => {
 
 // PROTECTED ROUTES
 const protect = async (req, res, next) => {
-     if (!req.headers.authorization.startsWith('Bearer')) {
-          return next('Please provide authorization header');
-     }
-
-     const token = req.headers.authorization.split(' ').at(-1);
+     const token = req.cookies.token;
 
      //  CHECK IF THERE IS TOKEN
      if (!token) return next('You are not authenticated');

@@ -1,20 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useUser } from '../authentication/useUser';
 import { userPosts } from '../../services/apiPosts';
-import { getCookie } from '../../hooks/useCookies';
 
 export const useUserPosts = () => {
- const { user } = useUser();
- const cookie = getCookie('novelToken');
+     const { user } = useUser();
 
- const {
-  isLoading,
-  data: posts,
-  error,
- } = useQuery({
-  queryKey: ['userPosts', user?._id],
-  queryFn: () => userPosts({ id: user._id, cookie }),
- });
+     const { isLoading, data: posts } = useQuery({
+          queryKey: ['userPosts', user?._id],
+          queryFn: () => userPosts(user._id),
+     });
 
- return { isLoading, posts, error };
+     return { isLoading, posts };
 };

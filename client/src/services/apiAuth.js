@@ -20,22 +20,27 @@ export const signup = async (newUser) => {
 
 // LOGIN
 export const login = async (user) => {
-     const res = await fetch(`${API_URL}/users/login`, {
-          method: 'POST',
-          headers: {
-               'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(user),
-     });
+     try {
+          const res = await fetch(`${API_URL}/users/login`, {
+               method: 'POST',
+               headers: {
+                    'Content-Type': 'application/json',
+               },
+               credentials: 'include',
+               body: JSON.stringify(user),
+          });
 
-     const data = await res.json();
+          const data = await res.json();
 
-     if (data.status === 'fail') throw new Error(data.message);
+          if (data.error) throw Error(data.message);
 
-     return data;
+          return data;
+     } catch (err) {
+          throw new Error(err);
+     }
 };
 
-// GET USER
+// // GET USER
 export const getCurrentUser = () => {
      const user = JSON.parse(localStorage.getItem('novelnotion-user'));
 

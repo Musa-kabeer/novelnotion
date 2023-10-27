@@ -18,7 +18,10 @@ const app = express();
 // CROSS-ORIGIN
 const corsOptions = {
      methods: ['GET', 'POST', 'PUT', 'DELETE'],
-     origin: '*',
+     origin:
+          process.env.NODE_ENV === 'production'
+               ? 'https://novelnotionapi.onrender.com'
+               : 'http://localhost:5173',
      optionSuccessStatus: 200,
      headers: ['Content-Type', 'Authorization', 'x-access-token'],
      credentials: true,
@@ -26,7 +29,6 @@ const corsOptions = {
      //  preflightContinue: true,
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
 // COOKIE-PARSER
 app.use(cookieParser());

@@ -3,33 +3,26 @@ import toast from 'react-hot-toast';
 
 import { updateUserInfo } from '../../services/apiUsers';
 import { useUser } from '../authentication/useUser';
-import { getCookie } from '../../hooks/useCookies';
 
 export const useSettingsInfo = () => {
- const queryClient = useQueryClient();
- const { user } = useUser();
- const cookie = getCookie('novelToken');
+     const queryClient = useQueryClient();
+     const { user } = useUser();
 
- const { isUpdatingInfo, mutate: updateInfo } = useMutation({
-  mutationFn: (info) =>
-   updateUserInfo({ updateUser: info, id: user._id, cookie }),
+     const { isUpdatingInfo, mutate: updateInfo } = useMutation({
+          mutationFn: (info) =>
+               updateUserInfo({ updateUser: info, id: user._id }),
 
-  onSuccess: (data) => {
-   // UPDATE THE OLD DATA TO NEW ONE
-   queryClient.setQueryData(['user'], data);
+          onSuccess: (data) => {
+               // UPDATE
+               queryClient.invalidateQueries(['user']);
 
-   // UPDATE LOCASTORAGE
-   localStorage.setItem('novelnotion-user', JSON.stringify(data));
+               toast.success('Info successfully updated!');
+          },
 
-   queryClient.invalidateQueries(['user']);
+          onError: (err) => {
+               toast.error(err.message);
+          },
+     });
 
-   toast.success('Info successfully updated!');
-  },
-
-  onError: (err) => {
-   toast.error(err.message);
-  },
- });
-
- return { isUpdatingInfo, updateInfo };
+     return { isUpdatingInfo, updateInfo };
 };

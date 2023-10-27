@@ -7,12 +7,10 @@ import { useUser } from '../features/authentication/useUser';
 import { useDarkMode } from '../context/darkModeContext';
 import Logo from './Logo';
 import { useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 
 const Navigation = () => {
      const { user } = useUser();
      const { darked, setDarked } = useDarkMode();
-     const [_, setCookies] = useCookies();
      const navigate = useNavigate();
 
      useEffect(() => {
@@ -24,9 +22,6 @@ const Navigation = () => {
      }, [darked]);
 
      const handleLogout = () => {
-          setCookies('novelToken', 'loggedout');
-          localStorage.setItem('novelnotion-user', null);
-
           navigate('/login');
      };
 

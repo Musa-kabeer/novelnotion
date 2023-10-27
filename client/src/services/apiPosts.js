@@ -1,11 +1,9 @@
 import { API_URL } from './config';
 
 // Get All Posts
-export const allPosts = async ({ page, cookie }) => {
+export const allPosts = async (page) => {
      const res = await fetch(`${API_URL}/posts?page=${page}`, {
-          headers: {
-               Authorization: `Bearer ${cookie}`,
-          },
+          credentials: 'include',
      });
 
      const data = await res.json();
@@ -18,11 +16,9 @@ export const allPosts = async ({ page, cookie }) => {
 };
 
 // GET A POST
-export const getPost = async ({ id, cookie }) => {
+export const getPost = async (id) => {
      const res = await fetch(`${API_URL}/posts/${id}`, {
-          headers: {
-               Authorization: `Bearer ${cookie}`,
-          },
+          credentials: 'include',
      });
 
      const data = await res.json();
@@ -31,17 +27,17 @@ export const getPost = async ({ id, cookie }) => {
 
      const { post } = data.data;
 
+     console.log(post);
+
      return post;
 };
 
 // GET RELATED POSTS
-export const getRelatedPost = async ({ id, category, cookie }) => {
+export const getRelatedPost = async (id, category) => {
      const res = await fetch(
           `${API_URL}/posts/${id}/related-post/${category}`,
           {
-               headers: {
-                    Authorization: `Bearer ${cookie}`,
-               },
+               credentials: 'include',
           }
      );
      const data = await res.json();
@@ -54,11 +50,11 @@ export const getRelatedPost = async ({ id, category, cookie }) => {
 };
 
 // CREATE NEW POST
-export const createPost = async ({ formData, cookie }) => {
+export const createPost = async (formData) => {
      const res = await fetch(`${API_URL}/posts`, {
           method: 'POST',
           headers: {
-               Authorization: `Bearer ${cookie}`,
+               'Content-Type': 'application/json',
           },
           body: formData,
      });
@@ -71,11 +67,9 @@ export const createPost = async ({ formData, cookie }) => {
 };
 
 // USER POSTS
-export const userPosts = async ({ id, cookie }) => {
+export const userPosts = async (id) => {
      const res = await fetch(`${API_URL}/users/${id}/posts`, {
-          headers: {
-               Authorization: `Bearer ${cookie}`,
-          },
+          credentials: 'include',
      });
 
      const data = await res.json();
